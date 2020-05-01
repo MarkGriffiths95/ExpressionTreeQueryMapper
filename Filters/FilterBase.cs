@@ -19,13 +19,12 @@ namespace ExpressionTreeQueryMapper.Filters
         }
 
 
-        public static Expression<Func<T, bool>> AddToFilter(Expression<Func<T, bool>> filter2)
+        public static void AddToFilter(Expression<Func<T, bool>> filter2)
         {
             var body = new ReplaceVisitor(_filter.Parameters[0], filter2.Parameters[0]).Visit(_filter.Body);
-            
-            var expr = Expression.Lambda<Func<T, bool>>(BuildExpressionByType(), filter2.Parameters);
 
-            return expr;
+            _filter = Expression.Lambda<Func<T, bool>>(BuildExpressionByType(), filter2.Parameters);
+
 
             Expression BuildExpressionByType()
             {

@@ -6,14 +6,14 @@ namespace ExpressionTreeQueryMapper.ExtentionMethods
 {
     public static class IEnumerableExtentionMethods
     {
-        public static List<TSource> FindAllWhere<TSource>(this IEnumerable<TSource> source, IFilter<TSource> filter)
+        public static IEnumerable<TSource> FindAllWhere<TSource>(this IEnumerable<TSource> source, IFilter<TSource> filter)
         {
-            return source.AsQueryable().Where(filter.GenerateExpression()).ToList();
+            return source.AsQueryable().Where(filter.GenerateExpression());
         }
 
         public static TSource FindSingleWhere<TSource>(this IEnumerable<TSource> source, IFilter<TSource> filter)
         {
-            return source.AsQueryable().Where(filter.GenerateExpression()).SingleOrDefault();
+            return source.AsQueryable().SingleOrDefault(filter.GenerateExpression());
         }
 
     }
