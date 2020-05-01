@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ExpressionTreeQueryMapper.ExtentionMethods
 {
-    public static class ToListExtentionMethods
+    public static class IEnumerableExtentionMethods
     {
         public static List<TSource> FindAllWhere<TSource>(this IEnumerable<TSource> source, IFilter<TSource> filter)
         {
