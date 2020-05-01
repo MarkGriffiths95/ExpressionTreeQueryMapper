@@ -5,24 +5,31 @@ namespace ExpressionTreeQueryMapper.Filters
 {
     public abstract class FilterBase<T> : IFilter<T>
     {
-
-        protected Expression<Func<T, bool>> filter = model => true;
+        protected static Expression<Func<T, bool>> _filter = model => true;
+        protected static ExpressionType _expressionType;
 
         protected FilterBase()
         {
-
+            _expressionType = ExpressionType.AndAlso;
         }
 
-        public static Expression<Func<T, bool>> Combine(Expression<Func<T, bool>> filter1, Expression<Func<T, bool>> filter2,ExpressionType expressionType = ExpressionType.AndAlso)
+        protected FilterBase(ExpressionType expressionType)
         {
-            var body = new ReplaceVisitor(filter1.Parameters[0], filter2.Parameters[0]).Visit(filter1.Body);
+            _expressionType = expressionType;
+        }
+
+
+        public static Expression<Func<T, bool>> AddToFilter(Expression<Func<T, bool>> filter2)
+        {
+            var body = new ReplaceVisitor(_filter.Parameters[0], filter2.Parameters[0]).Visit(_filter.Body);
+            
             var expr = Expression.Lambda<Func<T, bool>>(BuildExpressionByType(), filter2.Parameters);
 
             return expr;
 
             Expression BuildExpressionByType()
             {
-                switch (expressionType)
+                switch (_expressionType)
                 {
                     case ExpressionType.AndAlso:
                         return Expression.AndAlso(body, filter2.Body);

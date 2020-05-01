@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExpressionTreeQueryMapper.ExtMethods
+namespace ExpressionTreeQueryMapper.ExtentionMethods
 {
     public static class ToListExtentionMethods
     {
